@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: postgres
+    password: 1284
+    url: jdbc:postgresql://localhost:5432/Sleepless
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080
