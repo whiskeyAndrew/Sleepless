@@ -1,0 +1,10 @@
+#toggleButtonList{
+    position: fixed;
+    right: 1%;
+}
+
+#buttonList{
+    position: fixed;
+    right: 1%;
+    /*top: 2%;*/
+}

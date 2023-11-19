@@ -32,7 +32,7 @@ function generateLineChart(dates, datesValues) {
                         text: 'Количество переходов по пригласительной ссылке',
                         fontSize: 20
                     },
-                    legend:{
+                    legend: {
                         labels: {
                             fontSize: 16 // Установка размера шрифта легенды
                         }
@@ -43,28 +43,27 @@ function generateLineChart(dates, datesValues) {
                                 fontSize: 16,
                                 beginAtZero: true,
                                 precision: 0, // Отображение только целочисленных значений
-                                stepSize:1,
-                                callback: function(value, index, values) {
+                                stepSize: 1,
+                                callback: function (value, index, values) {
                                     return Math.round(value); // Округление значения
                                 }
                             }
                         }],
-                        xAxes:[{
+                        xAxes: [{
                             ticks: {
                                 fontSize: 16
                             }
                         }]
                     },
-                        maintainAspectRatio: false
-                    }
-                });
+                    maintainAspectRatio: false
+                }
+            });
             console.log(responseObject);
         })
-        .
-            catch(error => {
-                console.error('Произошла ошибка:', error);
-            });
+        .catch(error => {
+            console.error('Произошла ошибка:', error);
+        });
 
-        }
+}
 
 
