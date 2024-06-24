@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 public class SleeplessApplication {
 
 	public static void main(String[] args) throws FileNotFoundException {
-//		SpringApplication.run(SleeplessApplication.class, args);
+		SpringApplication.run(SleeplessApplication.class, args);
 	}
 
 }
