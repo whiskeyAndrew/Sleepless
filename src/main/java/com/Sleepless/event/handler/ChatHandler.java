@@ -4,6 +4,7 @@ import com.github.philippheuer.events4j.api.domain.IEvent;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.chat.events.channel.UserTimeoutEvent;
+import com.github.twitch4j.eventsub.events.ChannelPointsCustomRewardEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class ChatHandler {
     }
 
     @EventSubscriber
-    public void printRedemption(UserTimeoutEvent event){
+    public void printRedemption(ChannelPointsCustomRewardEvent event){
         log.info("Hello world" + event.getClass());
     }
 }
