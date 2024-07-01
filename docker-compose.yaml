@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  postgres:
+    hostname: sleepless_db
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root123
+      POSTGRES_DB: sleepless
+    #      POSTGRES_PORT: 5433
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  sleepless_listener:
+    build:
+      dockerfile: DockerfileSleepless
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8080:8080"
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - rabbitmq_go_net
+
+networks:
+  rabbitmq_go_net:
+    driver: bridge
