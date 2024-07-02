@@ -17,7 +17,7 @@ public class ChatMessageEventHandler {
 
     public void execute(ChannelMessageEvent event) {
         userService.updateOrAddIfNeededById(UserAdapter.eventUserToEntity(event.getUser()));
-       log.trace("[" + event.getChannel().getName() + "]["
+       log.info("[" + event.getChannel().getName() + "]["
                 + event.getPermissions().toString() + "] "
                 + event.getUser().getName() + ": "
                 + event.getMessage());

@@ -19,6 +19,7 @@ public class UserEntity  {
 
     @Id
     private String id;
+    private Instant creationDate;
 
     private String login;
 
@@ -32,18 +33,19 @@ public class UserEntity  {
 
     private String email;
 
-    private Instant createdAt;
+    private Instant accountCreationTime;
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(login, that.login) && Objects.equals(displayName, that.displayName) && Objects.equals(type, that.type) && Objects.equals(broadcasterType, that.broadcasterType) && Objects.equals(description, that.description) && Objects.equals(email, that.email) && Objects.equals(createdAt, that.createdAt);
+        return Objects.equals(id, that.id) && Objects.equals(login, that.login) && Objects.equals(displayName, that.displayName) && Objects.equals(type, that.type) && Objects.equals(broadcasterType, that.broadcasterType) && Objects.equals(description, that.description) && Objects.equals(email, that.email) && Objects.equals(accountCreationTime, that.accountCreationTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, displayName, type, broadcasterType, description, email, createdAt);
+        return Objects.hash(id, login, displayName, type, broadcasterType, description, email, accountCreationTime);
     }
 }

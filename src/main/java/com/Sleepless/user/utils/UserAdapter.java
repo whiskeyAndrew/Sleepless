@@ -15,7 +15,7 @@ public class UserAdapter {
                 .broadcasterType(user.getBroadcasterType())
                 .description(user.getDescription())
                 .email(user.getEmail())
-                .createdAt(user.getCreatedAt())
+                .accountCreationTime(user.getCreatedAt())
                 .build();
     }
 
