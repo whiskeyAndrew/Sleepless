@@ -1,11 +1,49 @@
 package com.Sleepless.user.entity;
 
-import com.github.twitch4j.helix.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 
+import java.time.Instant;
+import java.util.Objects;
 
+@Entity
+@Table(name = "users")
+@Builder
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity  {
 
+    @Id
+    private String id;
 
+    private String login;
+
+    private String displayName;
+
+    private String type;
+
+    private String broadcasterType;
+
+    private String description;
+
+    private String email;
+
+    private Instant createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(login, that.login) && Objects.equals(displayName, that.displayName) && Objects.equals(type, that.type) && Objects.equals(broadcasterType, that.broadcasterType) && Objects.equals(description, that.description) && Objects.equals(email, that.email) && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, displayName, type, broadcasterType, description, email, createdAt);
+    }
 }

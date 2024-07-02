@@ -4,6 +4,5 @@ MAINTAINER somethingmemorable
 WORKDIR /app
 COPY pom.xml /app
 COPY src /app/src
-RUN mvn clean install
-#COPY ../target/Sleepless-0.0.1-SNAPSHOT.jar app.jar
+RUN mvn clean install -DskipTests
 ENTRYPOINT ["java", "-jar", "/app/target/Sleepless.jar"]
