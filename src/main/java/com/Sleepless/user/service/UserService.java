@@ -6,6 +6,8 @@ import com.Sleepless.user.repository.UserRepository;
 import com.Sleepless.user.utils.UserAdapter;
 import com.github.twitch4j.TwitchClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserTwitchService userTwitchService;
@@ -22,7 +25,7 @@ public class UserService {
     public void updateOrAddIfNeededById(UserEntity user){
         String id = user.getId();
         if (!userRepository.existsById(id)) {
-            System.out.println("Creating new user");
+            log.info("Creating new user: " + user.getLogin());
             UserEntity entity = UserAdapter.twitchUserToEntity(userTwitchService.getUserById(user.getId()));
             userRepository.save(entity);
             return;
@@ -30,7 +33,7 @@ public class UserService {
 
         UserEntity currentUser = userRepository.findById(id);
         if (!currentUser.getLogin().equals(user.getLogin())) {
-            System.out.println("Updating user, name was: " + currentUser.getDisplayName() + ", new name: " + user.getDisplayName()) ;
+            log.info("Updating user, name was: " + currentUser.getDisplayName() + ", new name: " + user.getDisplayName()) ;
             UserEntity entity = UserAdapter.twitchUserToEntity(userTwitchService.getUserById(user.getId()));
             userRepository.save(entity);
         }
