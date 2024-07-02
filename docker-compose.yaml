@@ -12,7 +12,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./other/postgres-data:/var/lib/postgresql/data
+    depends_on:
+      - "rabbitmq"
 
   sleepless_listener:
     build:
@@ -22,8 +24,8 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
     depends_on:
-      - postgres
-      - rabbitmq
+      - "postgres"
+
     ports:
       - "8080:8080"
 
