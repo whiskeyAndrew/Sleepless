@@ -23,6 +23,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
+      MONGO_DATASOURCE_URL: mongodb
+      MONGO_DATASOURCE_PORT: 27017
     depends_on:
       - "postgres"
 
@@ -45,8 +47,11 @@ services:
     image: mongo:6-jammy
     ports:
       - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - dbdata6:/var/lib/mongo/data
+      - ./other/mongo-data:/var/lib/mongo/data
     depends_on:
       - "postgres"
 

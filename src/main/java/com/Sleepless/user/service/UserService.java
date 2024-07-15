@@ -18,19 +18,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-    @Autowired
-    public void setUserJpaRepo(@Qualifier("userJpaRepo") UserRepository userJpaRepo) {
-        this.userJpaRepo = userJpaRepo;
-    }
 
-    @Autowired
-    public void setUserMongoRepo(@Qualifier("userMongoRepo") UserMongoRepository userMongoRepo) {
-        this.userMongoRepo = userMongoRepo;
-    }
+    private final UserRepository userJpaRepo;
 
-    private UserRepository userJpaRepo;
-
-    private UserMongoRepository userMongoRepo;
+    private final UserMongoRepository userMongoRepo;
     private final UserTwitchService userTwitchService;
     private final TwitchClient twitchClient;
     private final TwitchServerConfig config;
