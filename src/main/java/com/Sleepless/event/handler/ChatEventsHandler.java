@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ChatHandler {
+public class ChatEventsHandler {
     private final UserTwitchService userTwitchService;
     private final TwitchClient twitchClient;
     private final EventManager eventManager;

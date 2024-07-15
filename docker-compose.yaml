@@ -41,6 +41,15 @@ services:
     networks:
       - rabbitmq_go_net
 
+  mongodb:
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata6:/var/lib/mongo/data
+    depends_on:
+      - "postgres"
+
 networks:
   rabbitmq_go_net:
     driver: bridge
