@@ -1,18 +1,18 @@
 package com.Sleepless.user.service;
 
 import com.Sleepless.config.TwitchServerConfig;
-import com.Sleepless.mongo.repository.UserMongoRepository;
+import com.Sleepless.repositories.mongo.UserMongoRepository;
 import com.Sleepless.user.entity.UserEntity;
-//import com.Sleepless.mongo.repository.UserMongoRepository;
-import com.Sleepless.user.repository.UserRepository;
+import com.Sleepless.repositories.jpa.UserRepository;
 import com.Sleepless.user.utils.UserAdapter;
 import com.github.twitch4j.TwitchClient;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class UserService {
         if (!userJpaRepo.existsById(id)) {
             log.info("Creating new user: " + user.getLogin());
             UserEntity entity = UserAdapter.twitchUserToEntity(userTwitchService.getUserById(user.getId()));
+            entity.setCreationDate(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
             saveToAllDatasources(entity);
             return;
         }
@@ -39,6 +40,7 @@ public class UserService {
         if (!currentUser.getLogin().equals(user.getLogin())) {
             log.info("Updating user, name was: " + currentUser.getDisplayName() + ", new name: " + user.getDisplayName());
             UserEntity entity = UserAdapter.twitchUserToEntity(userTwitchService.getUserById(user.getId()));
+            entity.setCreationDate(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
             saveToAllDatasources(entity);
         }
     }

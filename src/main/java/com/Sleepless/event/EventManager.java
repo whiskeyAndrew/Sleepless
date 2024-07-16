@@ -18,7 +18,7 @@ public class EventManager {
 
     public EventManager(ChatMessageEventHandler chatMessageEventHandler, UserService userService) {
         this.chatMessageEventHandler = chatMessageEventHandler;
-        initFixedThreadPool();
+        initCachedThreadPool();
     }
 
     private void initCachedThreadPool(){
