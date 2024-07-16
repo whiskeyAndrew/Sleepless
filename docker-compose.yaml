@@ -63,7 +63,7 @@ services:
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
       SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
 
-
+      ES_ADDRESS: es
     ports:
       - "8080:8080"
     depends_on:

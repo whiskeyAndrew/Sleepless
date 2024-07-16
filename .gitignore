@@ -1306,3 +1306,4 @@ build/
 /other/postgres-data/postgresql.conf
 /other/postgres-data/postmaster.opts
 /other/postgres-data/postmaster.pid
+/other/
