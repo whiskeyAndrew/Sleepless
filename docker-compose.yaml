@@ -8,13 +8,29 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root123
       POSTGRES_DB: sleepless
-    #      POSTGRES_PORT: 5433
+#          POSTGRES_PORT: 5433
     ports:
       - "5432:5432"
     volumes:
       - ./other/postgres-data:/var/lib/postgresql/data
-    depends_on:
-      - "rabbitmq"
+
+  mongo:
+    image: mongo:4.4.18
+    container_name: mongo
+    hostname: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=sleepless
+      - MONGO_DB_USERNAME=root
+      - MONGO_DB_PASSWORD=root
+    volumes:
+      - ./other/mongo-data/db:/data/db/
+      - ./other/mongo-data/log:/var/log/mongodb/
+      - ./other/mongo-data/entrypoint:/docker-entrypoint-initdb.d/
+    command: [ "--bind_ip", "0.0.0.0" ]
 
   sleepless_listener:
     build:
@@ -23,38 +39,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
-      MONGO_DATASOURCE_URL: mongodb
-      MONGO_DATASOURCE_PORT: 27017
-    depends_on:
-      - "postgres"
 
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
     ports:
       - "8080:8080"
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - rabbitmq_go_net
-
-  mongodb:
-    image: mongo:6-jammy
-    ports:
-      - '27017:27017'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    volumes:
-      - ./other/mongo-data:/var/lib/mongo/data
     depends_on:
-      - "postgres"
-
-networks:
-  rabbitmq_go_net:
-    driver: bridge
+      - mongo
