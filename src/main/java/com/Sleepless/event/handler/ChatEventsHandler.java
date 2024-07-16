@@ -2,7 +2,7 @@ package com.Sleepless.event.handler;
 
 
 import com.Sleepless.event.EventManager;
-import com.Sleepless.user.service.UserTwitchService;
+import com.Sleepless.env.user.service.UserTwitchService;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 

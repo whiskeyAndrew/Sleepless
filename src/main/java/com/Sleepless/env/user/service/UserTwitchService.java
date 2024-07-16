@@ -1,4 +1,4 @@
-package com.Sleepless.user.service;
+package com.Sleepless.env.user.service;
 
 
 import com.Sleepless.config.TwitchServerConfig;

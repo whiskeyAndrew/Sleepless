@@ -1,10 +1,10 @@
-package com.Sleepless.user.service;
+package com.Sleepless.env.user.service;
 
 import com.Sleepless.config.TwitchServerConfig;
 import com.Sleepless.repositories.mongo.UserMongoRepository;
-import com.Sleepless.user.entity.UserEntity;
+import com.Sleepless.env.user.entity.UserEntity;
 import com.Sleepless.repositories.jpa.UserRepository;
-import com.Sleepless.user.utils.UserAdapter;
+import com.Sleepless.env.user.utils.UserAdapter;
 import com.github.twitch4j.TwitchClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

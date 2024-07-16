@@ -1,6 +1,6 @@
-package com.Sleepless.user.utils;
+package com.Sleepless.env.user.utils;
 
-import com.Sleepless.user.entity.UserEntity;
+import com.Sleepless.env.user.entity.UserEntity;
 import com.github.twitch4j.common.events.domain.EventUser;
 import com.github.twitch4j.helix.domain.User;
 

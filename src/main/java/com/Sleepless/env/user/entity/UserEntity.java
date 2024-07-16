@@ -1,5 +1,6 @@
-package com.Sleepless.user.entity;
+package com.Sleepless.env.user.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -31,7 +32,8 @@ public class UserEntity  {
     private String type;
 
     private String broadcasterType;
-
+    
+    @Column(length = 500)
     private String description;
 
     private String email;

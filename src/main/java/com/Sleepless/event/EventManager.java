@@ -1,7 +1,7 @@
 package com.Sleepless.event;
 
 import com.Sleepless.event.handler.ChatMessageEventHandler;
-import com.Sleepless.user.service.UserService;
+import com.Sleepless.env.user.service.UserService;
 import com.github.twitch4j.chat.events.TwitchEvent;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import org.springframework.stereotype.Component;
