@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.io.FileNotFoundException;
-
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = {"com.Sleepless.repositories.mongo"})
 @EnableJpaRepositories(basePackages = {"com.Sleepless.repositories.jpa"})
@@ -16,7 +14,9 @@ import java.io.FileNotFoundException;
 @EnableTransactionManagement
 public class SleeplessApplication {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws InterruptedException {
+		//Временный костыль чтобы дать другим контейнерам проснуться
+		Thread.sleep(10000);
 		SpringApplication.run(SleeplessApplication.class, args);
 	}
 

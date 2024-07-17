@@ -63,8 +63,10 @@ services:
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
       SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
 
-      ES_ADDRESS: es
+      ES_ADDRESS: http://es:9200
     ports:
       - "8080:8080"
     depends_on:
       - mongo
+      - elasticsearch
+      - postgres
