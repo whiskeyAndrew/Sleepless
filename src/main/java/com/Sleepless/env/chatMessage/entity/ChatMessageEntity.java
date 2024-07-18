@@ -21,11 +21,11 @@ import java.util.Set;
 public class ChatMessageEntity {
     @Id
     private String id;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String author;
     @Field(type = FieldType.Text)
     private String message;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String channelName;
 
     @ElementCollection
