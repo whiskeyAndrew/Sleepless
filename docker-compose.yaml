@@ -33,7 +33,7 @@ services:
       - ./other/mongo-data/entrypoint:/docker-entrypoint-initdb.d/
     command: [ "--bind_ip", "0.0.0.0" ]
 
-  elasticsearch:
+  es:
     image: elasticsearch:8.7.1
     container_name: elasticsearch
     hostname: es
@@ -64,6 +64,8 @@ services:
       SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
 
       ES_ADDRESS: http://es:9200
+
+      CONNECTIONS_TIMEOUT: 1200000
     ports:
       - "8080:8080"
     depends_on:

@@ -14,10 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class SleeplessApplication {
 
-	public static void main(String[] args) throws InterruptedException {
-		//Временный костыль чтобы дать другим контейнерам проснуться
-		Thread.sleep(10000);
-		SpringApplication.run(SleeplessApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SleeplessApplication.class, args);
+    }
 
 }
