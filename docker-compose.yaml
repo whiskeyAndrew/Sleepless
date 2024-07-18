@@ -13,6 +13,8 @@ services:
       - "5432:5432"
     volumes:
       - ./other/postgres-data:/var/lib/postgresql/data
+    profiles:
+      - env
 
   mongo:
     #Одна из последних версий которая работает на старом АРМ для RPI4
@@ -32,6 +34,8 @@ services:
       - ./other/mongo-data/log:/var/log/mongodb/
       - ./other/mongo-data/entrypoint:/docker-entrypoint-initdb.d/
     command: [ "--bind_ip", "0.0.0.0" ]
+    profiles:
+      - env
 
   es:
     image: elasticsearch:8.7.1
@@ -46,6 +50,8 @@ services:
       - "9300:9300"
     volumes:
       - ./other/es:/usr/share/elasticsearch/data
+    profiles:
+      - env
 
   sleepless_listener:
     build:
@@ -65,10 +71,11 @@ services:
 
       ES_ADDRESS: http://es:9200
 
-      CONNECTIONS_TIMEOUT: 1200000
     ports:
       - "8080:8080"
     depends_on:
       - mongo
       - elasticsearch
       - postgres
+    profiles:
+      - app
