@@ -8,37 +8,146 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root123
       POSTGRES_DB: sleepless
-    #      POSTGRES_PORT: 5433
+    #          POSTGRES_PORT: 5433
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./other/postgres-data:/var/lib/postgresql/data
+    profiles:
+      - env
 
-  sleepless_listener:
+  mongo:
+    #Одна из последних версий которая работает на старом АРМ для RPI4
+    image: mongo:4.4.18
+    container_name: mongo
+    hostname: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=sleepless
+      - MONGO_DB_USERNAME=root
+      - MONGO_DB_PASSWORD=root
+    volumes:
+      - ./other/mongo-data/db:/data/db/
+      - ./other/mongo-data/log:/var/log/mongodb/
+      - ./other/mongo-data/entrypoint:/docker-entrypoint-initdb.d/
+    command: [ "--bind_ip", "0.0.0.0" ]
+    profiles:
+      - env
+
+  es:
+    image: elasticsearch:8.7.1
+    container_name: elasticsearch
+    hostname: es
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./other/es:/usr/share/elasticsearch/data
+    profiles:
+      - env
+
+  kibana:
+    image: kibana:8.7.1
+    volumes:
+      - ./other/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://es:9200"]'
+      SERVER_HOST: 0.0.0.0
+    ports:
+      - "5601:5601"
+    profiles:
+      - env
+
+  sleepless1:
     build:
       dockerfile: DockerfileSleepless
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
-    depends_on:
-      - postgres
-      - rabbitmq
+
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
+
+      ES_ADDRESS: http://es:9200
+
+      TARGET_CHANNEL: melharucos
     ports:
       - "8080:8080"
+    depends_on:
+      - mongo
+      - elasticsearch
+      - postgres
+    profiles:
+      - app
+      - app1
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
+  sleepless2:
+    build:
+      dockerfile: DockerfileSleepless
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
+
+      ES_ADDRESS: http://es:9200
+
+      TARGET_CHANNEL: just_ns
     ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - rabbitmq_go_net
+      - "8081:8081"
+    depends_on:
+      - mongo
+      - elasticsearch
+      - postgres
+    profiles:
+      - app
+      - app2
 
-networks:
-  rabbitmq_go_net:
-    driver: bridge
+  sleepless3:
+    build:
+      dockerfile: DockerfileSleepless
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
+
+      ES_ADDRESS: http://es:9200
+
+      TARGET_CHANNEL: RoadHouse
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo
+      - elasticsearch
+      - postgres
+    profiles:
+      - app
+      - app3
