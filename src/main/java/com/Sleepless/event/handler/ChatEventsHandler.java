@@ -2,7 +2,7 @@ package com.Sleepless.event.handler;
 
 
 import com.Sleepless.event.EventManager;
-import com.Sleepless.env.user.service.UserTwitchService;
+import com.Sleepless.env.twitchWrapper.service.UserTwitchService;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 
@@ -21,6 +21,7 @@ public class ChatEventsHandler {
     private final UserTwitchService userTwitchService;
     private final TwitchClient twitchClient;
     private final EventManager eventManager;
+
     @PostConstruct
     public void init() {
         twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).registerListener(this);

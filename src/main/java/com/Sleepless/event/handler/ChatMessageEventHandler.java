@@ -2,9 +2,9 @@ package com.Sleepless.event.handler;
 
 import com.Sleepless.env.chatMessage.service.ChatMessageService;
 import com.Sleepless.env.chatMessage.utils.ChatMessageAdapter;
-import com.Sleepless.twitchutils.TwitchChatMessageSender;
+import com.Sleepless.env.twitchWrapper.twitchutils.TwitchChatMessageSender;
 import com.Sleepless.env.user.service.UserService;
-import com.Sleepless.env.user.service.UserTwitchService;
+import com.Sleepless.env.twitchWrapper.service.UserTwitchService;
 import com.Sleepless.env.user.utils.UserAdapter;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,12 @@ public class ChatMessageEventHandler {
                 + event.getUser().getName() + ": "
                 + event.getMessage());
 
-        userService.updateOrAddIfNeededById(UserAdapter.eventUserToEntity(event.getUser()));
+        try {
+            userService.updateOrAddIfNeededById(UserAdapter.eventUserToEntity(event.getUser()));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
         chatMessageService.save(ChatMessageAdapter.twitchChatMessageToEntity(event));
 //        if (event.getMessage().startsWith("!test")) {
 //            messageSender.sendSimpleMessageToTarget(event.getUser().getName(), "Отвечаю на тестовое сообщение");

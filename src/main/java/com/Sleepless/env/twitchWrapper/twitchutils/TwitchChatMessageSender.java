@@ -1,4 +1,4 @@
-package com.Sleepless.twitchutils;
+package com.Sleepless.env.twitchWrapper.twitchutils;
 
 import com.Sleepless.config.TwitchServerConfig;
 import com.github.twitch4j.TwitchClient;

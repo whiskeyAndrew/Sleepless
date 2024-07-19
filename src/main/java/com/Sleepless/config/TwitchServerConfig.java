@@ -33,6 +33,7 @@ public class TwitchServerConfig {
     @Value("${twitch.target-channel}")
     private String targetChannel;
 
+    private String currentChannel;
     private User targetChannelUser;
 
     @Bean
@@ -50,18 +51,27 @@ public class TwitchServerConfig {
                 .withChatAccount(credential())
                 .build();
         twitchClient.getChat().joinChannel(getTargetChannel());
-
+        currentChannel = targetChannel;
         initTargetUser(twitchClient);
         registerEventsManagers(twitchClient);
         return twitchClient;
     }
+
+    public void changeChannel(String newTargetChannel) throws Exception {
+        TwitchClient twitchClient = twitchClient();
+        twitchClient.getChat().leaveChannel(targetChannel);
+        twitchClient.getChat().joinChannel(newTargetChannel);
+        currentChannel = newTargetChannel;
+
+    }
+
     private void initTargetUser(TwitchClient twitchClient) {
         targetChannelUser = twitchClient.getHelix().getUsers(credential().getAccessToken(), null, Collections.singletonList(getTargetChannel()))
                 .execute().getUsers().get(0);
     }
 
-    private void registerEventsManagers(TwitchClient twitchClient){
-        twitchClient.getPubSub().listenForChannelPointsRedemptionEvents(credential(),targetChannelUser.getId());
+    private void registerEventsManagers(TwitchClient twitchClient) {
+        twitchClient.getPubSub().listenForChannelPointsRedemptionEvents(credential(), targetChannelUser.getId());
         twitchClient.getEventManager().onEvent(RewardRedeemedEvent.class, System.out::println);
     }
 }
