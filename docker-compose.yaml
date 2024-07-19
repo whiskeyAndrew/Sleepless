@@ -65,7 +65,7 @@ services:
     profiles:
       - env
 
-  sleepless_listener:
+  sleepless1:
     build:
       dockerfile: DockerfileSleepless
     environment:
@@ -83,6 +83,7 @@ services:
 
       ES_ADDRESS: http://es:9200
 
+      TARGET_CHANNEL: melharucos
     ports:
       - "8080:8080"
     depends_on:
@@ -91,3 +92,62 @@ services:
       - postgres
     profiles:
       - app
+      - app1
+
+  sleepless2:
+    build:
+      dockerfile: DockerfileSleepless
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
+
+      ES_ADDRESS: http://es:9200
+
+      TARGET_CHANNEL: just_ns
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+      - elasticsearch
+      - postgres
+    profiles:
+      - app
+      - app2
+
+  sleepless3:
+    build:
+      dockerfile: DockerfileSleepless
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+
+      SPRING_DATA_MONGODB_HOST: mongo
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: sleepless
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      SPRING_DATA_MONGODB_AUTO_INDEX_CREATION: true
+
+      ES_ADDRESS: http://es:9200
+
+      TARGET_CHANNEL: RoadHouse
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo
+      - elasticsearch
+      - postgres
+    profiles:
+      - app
+      - app3
