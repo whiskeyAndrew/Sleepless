@@ -67,7 +67,7 @@ services:
 
   sleepless1:
     build:
-      dockerfile: DockerfileSleepless
+      dockerfile: Sleepless/DockerfileSleepless
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
@@ -96,7 +96,7 @@ services:
 
   sleepless2:
     build:
-      dockerfile: DockerfileSleepless
+      dockerfile: Sleepless/DockerfileSleepless
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
@@ -125,7 +125,7 @@ services:
 
   sleepless3:
     build:
-      dockerfile: DockerfileSleepless
+      dockerfile: Sleepless/DockerfileSleepless
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sleepless
       SPRING_DATASOURCE_USERNAME: root
