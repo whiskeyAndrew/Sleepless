@@ -57,9 +57,9 @@ public class TwitchServerConfig {
         return twitchClient;
     }
 
-    public void changeChannel(String newTargetChannel) throws Exception {
+    public void changeChannel(String newTargetChannel) {
         TwitchClient twitchClient = twitchClient();
-        twitchClient.getChat().leaveChannel(targetChannel);
+        twitchClient.getChat().leaveChannel(currentChannel);
         twitchClient.getChat().joinChannel(newTargetChannel);
         currentChannel = newTargetChannel;
 

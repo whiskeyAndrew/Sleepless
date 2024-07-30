@@ -17,19 +17,23 @@ public class UserTwitchService {
     private final TwitchClient twitchClient;
     private final TwitchServerConfig config;
 
-    public User getUserById(String id) throws Exception {
+    public User getUserById(String id) {
         UserList resultList = twitchClient.getHelix().getUsers(config.getAccessToken(), Collections.singletonList(id), null).execute();
         if (resultList.getUsers().isEmpty()) {
-            throw new Exception("User " + id + " not found!");
+            return null;
         }
         return resultList.getUsers().get(0);
     }
 
-    public User getUserByName(String name) throws Exception {
-        UserList resultList = twitchClient.getHelix().getUsers(config.getAccessToken(), null, Collections.singletonList(name)).execute();
-        if (resultList.getUsers().isEmpty()) {
-            throw new Exception("User " + name + " not found!");
+    public User getUserByName(String name) {
+        try {
+            UserList resultList = twitchClient.getHelix().getUsers(config.getAccessToken(), null, Collections.singletonList(name)).execute();
+            if (resultList.getUsers().isEmpty()) {
+                return null;
+            }
+            return resultList.getUsers().get(0);
+        } catch (Exception e) {
+            return null;
         }
-        return resultList.getUsers().get(0);
     }
 }

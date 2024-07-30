@@ -3,10 +3,14 @@ package SleeplessTG.service;
 import SleeplessTG.util.SendMessageFactory;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -16,10 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Component
 public class TelegramBot implements LongPollingUpdateConsumer {
 
     private final TelegramClient telegramClient;
-
+    private final MessageHandler messageHandler;
 
     //    public void consume(List<Update> list) {
 //        for (Update update : list) {
@@ -34,13 +39,16 @@ public class TelegramBot implements LongPollingUpdateConsumer {
 //            }
 //        }
 //    }
-//
+
     @Override
     public void consume(List<Update> list) {
+        System.out.println("test");
         String chatId = list.get(0).getMessage().getChatId().toString();
         SendMessageFactory sendMessageFactory = new SendMessageFactory();
         for (Update update : list) {
-            SendMessage message = sendMessageFactory.createSendMessage(update);
+            messageHandler.handleUpdate(update);
+        }
+//            SendMessage message = sendMessageFactory.createSendMessage(update);
 //            update.getUpdateId();
 //            if (update.hasMessage() && update.getMessage().hasText()) {
 //                System.out.println(update.getMessage().getText());
@@ -71,6 +79,6 @@ public class TelegramBot implements LongPollingUpdateConsumer {
 //                    throw new RuntimeException(e);
 //                }
 //            }
-        }
+
     }
 }

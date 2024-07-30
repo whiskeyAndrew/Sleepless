@@ -1,6 +1,7 @@
 package SleeplessTG.config;
 
 import SleeplessTG.service.TelegramBot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,9 @@ public class SPConfig {
     private String botToken;
 
     @Bean
-    public TelegramBotsLongPollingApplication botApp() throws TelegramApiException {
+    public TelegramBotsLongPollingApplication botApp(@Autowired TelegramBot telegramBot) throws TelegramApiException {
         TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication();
-        botsApplication.registerBot(botToken, new TelegramBot(telegramClient()));
+        botsApplication.registerBot(botToken, telegramBot);
         return botsApplication;
     }
 
