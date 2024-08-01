@@ -5,6 +5,7 @@ import com.Sleepless.env.twitchWrapper.controller.response.TwitchChangeChannelRe
 import com.Sleepless.env.twitchWrapper.service.UserTwitchService;
 import com.github.twitch4j.helix.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +15,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChangeChatConsumer {
     private final TwitchServerConfig twitchConfig;
     private final UserTwitchService twitchService;
 
     @KafkaListener(topics = "CHANGE_CHANNEL_TOPIC", groupId = "group_id")
     public void consume(String message) {
-        System.out.println ("Trying to change to channel: " + message + " by kafka message");
         User targetChannel = twitchService.getUserByName(message);
         if (targetChannel == null) {
+            log.info("Can't find channel: " + message);
             return;
         }
-        if (StringUtils.isBlank(targetChannel.getLogin())) {
-            throw new RuntimeException("Target channel is blank");
+
+        try {
+            log.info("Trying to change to channel: " + message + " by kafka message");
+
+            if (StringUtils.isBlank(targetChannel.getLogin())) {
+                throw new RuntimeException("Target channel is blank");
+            }
+
+            twitchConfig.changeChannel(targetChannel.getLogin());
+        } catch (Exception e) {
+            log.error("Failed to change to channel: " + targetChannel.getLogin(), e);
         }
-        twitchConfig.changeChannel(targetChannel.getLogin());
+        log.info("Successfully changed channel: " + targetChannel.getLogin());
     }
 }
 

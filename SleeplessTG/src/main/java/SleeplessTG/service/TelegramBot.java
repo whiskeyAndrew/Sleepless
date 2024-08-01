@@ -28,6 +28,8 @@ public class TelegramBot implements LongPollingUpdateConsumer {
 
     //    public void consume(List<Update> list) {
 //        for (Update update : list) {
+//    String chatId = list.get(0).getMessage().getChatId().toString();
+//    SendMessageFactory sendMessageFactory = new SendMessageFactory();
 //            if (update.hasMessage() && update.getMessage().hasText()) {
 //                System.out.println(update.getMessage().getText());
 //                SendMessage sendMessage = new SendMessage(update.getMessage().getChatId().toString(), "HELLO WORLD");
@@ -43,8 +45,7 @@ public class TelegramBot implements LongPollingUpdateConsumer {
     @Override
     public void consume(List<Update> list) {
         System.out.println("test");
-        String chatId = list.get(0).getMessage().getChatId().toString();
-        SendMessageFactory sendMessageFactory = new SendMessageFactory();
+
         for (Update update : list) {
             messageHandler.handleUpdate(update);
         }
